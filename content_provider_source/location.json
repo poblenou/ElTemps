@@ -1,0 +1,20 @@
+{
+  "fields": [
+    {
+      "name": "location_setting",
+      "type": "Long"
+    },
+    {
+      "name": "city_name",
+      "type": "String"
+    },
+    {
+      "name": "coord_lat",
+      "type": "Double"
+    },
+    {
+      "name": "coord_long",
+      "type": "Double"
+    }
+  ]
+}

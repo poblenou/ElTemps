@@ -1,0 +1,44 @@
+{
+  "fields": [
+    {
+      "name": "location_id",
+      "type": "Long",
+      "foreignKey": {
+        "table": "location",
+        "onDelete": "CASCADE"
+      }
+    },
+    {
+      "name": "date",
+      "type": "Integer"
+    },
+    {
+      "name": "short_desc",
+      "type": "String"
+    },
+    {
+      "name": "min",
+      "type": "Double"
+    },
+    {
+      "name": "max",
+      "type": "Double"
+    },
+    {
+      "name": "humidity",
+      "type": "Double"
+    },
+    {
+      "name": "pressure",
+      "type": "Double"
+    },
+    {
+      "name": "wind",
+      "type": "Double"
+    },
+    {
+      "name": "degrees",
+      "type": "Double"
+    }
+  ]
+}

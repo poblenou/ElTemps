@@ -1,0 +1,13 @@
+{
+  "syntaxVersion": 3,
+  "projectPackageId": "com.example.carlesgm.eltemps",
+  "authority": "com.example.carlesgm.eltemps.provider",
+  "providerJavaPackage": "com.example.carlesgm.eltemps.provider",
+  "providerClassName": "EltempsProvider",
+  "sqliteOpenHelperClassName": "EltempsSQLiteOpenHelper",
+  "sqliteOpenHelperCallbacksClassName": "EltempsSQLiteOpenHelperCallbacks",
+  "databaseFileName": "eltemps.db",
+  "databaseVersion": 1,
+  "enableForeignKeys": true,
+  "useAnnotations": true
+}
