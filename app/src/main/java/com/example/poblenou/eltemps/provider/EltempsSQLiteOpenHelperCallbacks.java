@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.carlesgm.eltemps.BuildConfig;
+import com.example.poblenou.eltemps.BuildConfig;
 
 /**
  * Implement your custom database creation or upgrade code here.

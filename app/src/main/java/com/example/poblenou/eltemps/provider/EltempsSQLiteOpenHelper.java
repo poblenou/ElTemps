@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
 
-import com.example.carlesgm.eltemps.BuildConfig;
+import com.example.poblenou.eltemps.BuildConfig;
 import com.example.poblenou.eltemps.provider.location.LocationColumns;
 import com.example.poblenou.eltemps.provider.weather.WeatherColumns;
 
