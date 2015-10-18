@@ -10,9 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import retrofit.Call;
+import retrofit.Response;
+import retrofit.Retrofit;
+import retrofit.http.GET;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -81,10 +88,31 @@ public class WeatherFragment extends Fragment {
         }
 
         if (id == R.id.action_refresh) {
+            refresh();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refresh() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.openweathermap.org/data/2.5/")
+                .build();
+
+        OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
+        Call<String> forecastCall = service.dailyForecast();
+        try {
+            Response<String> response = forecastCall.execute();
+            Toast.makeText(getContext(), response.body(), Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface OpenWeatherMapService {
+        @GET("forecast/daily?q=Barcelona&mode=json&units=metric&cnt=14&appid=bd82977b86bf27fb59a04b61b657fb6f")
+        Call<String> dailyForecast();
     }
 
 }
