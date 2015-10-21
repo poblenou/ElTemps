@@ -7,5 +7,10 @@
         android:orderInCategory="100"
         android:title="Refresh"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_hola"
+        android:orderInCategory="100"
+        android:title="hola"
+        app:showAsAction="never" />
 
 </menu>

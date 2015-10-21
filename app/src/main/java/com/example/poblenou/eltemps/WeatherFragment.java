@@ -11,16 +11,28 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.poblenou.eltemps.json.Forecast;
+import com.example.poblenou.eltemps.json.List;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+import retrofit.http.GET;
+
 /**
  * A placeholder fragment containing a simple view.
  */
-public class WeatherFragment extends Fragment {
-// key api wet 720f431ee254e6c38e84787031900368
+public class WeatherFragment extends Fragment
+{
+    //http://api.openweathermap.org/data/2.5/forecast/daily?q=Barcelona&units=metric&cnt=14&APPID=720f431ee254e6c38e84787031900368
+    // key api wet 720f431ee254e6c38e84787031900368
     private ArrayList<String> items;
     private ArrayAdapter<String> adapter;
 
@@ -89,6 +101,43 @@ public class WeatherFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private void refresh (){
+        //Conectamos con la api
+        String BASE_URL = "http://api.openweathermap.org/data/2.5";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        //Creamos el servicio
+        ClientWeatherMap service = retrofit.create(ClientWeatherMap.class);
+        //Hacemos una llamada
+        Call<Forecast> forecastCall=service.dailyForecast();
+        forecastCall.enqueue(new Callback<Forecast>() {
+            @Override
+            public void onResponse(Response<Forecast> response, Retrofit retrofit) {
+                Forecast forecast = response.body();
+                for(List list : forecast.getList()){
+                    Long dt = list.getDt();
+                    String description = list.getWeather().get(0).getDescription();
+                    Double min = list.getTemp().getMin();
+                    Double max = list.getTemp().getMax();
+
+                   // Log.w("list",String.format())
+
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
+    }
+    public interface ClientWeatherMap{
+        @GET("forecast/daily?q=Barcelona&units=metric&cnt=14&APPID=720f431ee254e6c38e84787031900368")
+        Call<Forecast> dailyForecast();
     }
 
 }
