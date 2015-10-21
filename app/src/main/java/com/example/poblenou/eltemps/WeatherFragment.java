@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -18,9 +20,10 @@ import java.util.Arrays;
  * A placeholder fragment containing a simple view.
  */
 public class WeatherFragment extends Fragment {
-
+// key api wet 720f431ee254e6c38e84787031900368
     private ArrayList<String> items;
     private ArrayAdapter<String> adapter;
+
 
     public WeatherFragment() {
     }
@@ -30,6 +33,7 @@ public class WeatherFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+
     }
 
     @Override
