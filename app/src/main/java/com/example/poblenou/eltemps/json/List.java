@@ -9,7 +9,7 @@ public class List {
     private Temp temp;
     private Double pressure;
     private Long humidity;
-    private java.util.List<Weather> weather = new ArrayList<Weather>();
+    private java.util.List<Weather> weather = new ArrayList<>();
     private Double speed;
     private Long deg;
     private Long clouds;
@@ -141,4 +141,12 @@ public class List {
         this.rain = rain;
     }
 
+    public String getForecastString() {
+        Long dt = getDt();
+        String description = getWeather().get(0).getDescription();
+        Double min = getTemp().getMin();
+        Double max = getTemp().getMax();
+
+        return String.format("%s - %s - %s/%s", dt, description, min, max);
+    }
 }

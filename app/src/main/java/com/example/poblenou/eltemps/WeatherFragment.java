@@ -1,7 +1,9 @@
 package com.example.poblenou.eltemps;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.example.poblenou.eltemps.json.Forecast;
+import com.example.poblenou.eltemps.json.List;
+import com.github.kevinsawicki.http.HttpRequest;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,10 +88,51 @@ public class WeatherFragment extends Fragment {
         }
 
         if (id == R.id.action_refresh) {
+            refresh();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refresh() {
+        DownloadWeatherTask task = new DownloadWeatherTask();
+        task.execute();
+    }
+
+    public class DownloadWeatherTask extends AsyncTask<Void, Void, ArrayList<String>> {
+        @Override
+        protected ArrayList<String> doInBackground(Void... params) {
+            final String ownUrl = "http://api.openweathermap.org/data/2.5/" +
+                    "forecast/daily?q=Barcelona&mode=json&units=metric&cnt=14&" +
+                    "appid=bd82977b86bf27fb59a04b61b657fb6f";
+
+            String response = HttpRequest.get(ownUrl).body();
+
+            Gson gson = new Gson();
+            Forecast forecast = gson.fromJson(response, Forecast.class);
+
+            ArrayList<List> dailyForecasts = (ArrayList<List>) forecast.getList();
+            ArrayList<String> dailyForecastsStrings = new ArrayList<>();
+
+            for (List dailyForecast : dailyForecasts) {
+                dailyForecastsStrings.add(dailyForecast.getForecastString());
+            }
+
+            return dailyForecastsStrings;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> forecasts) {
+            super.onPostExecute(forecasts);
+
+            Log.w(null, String.valueOf(forecasts));
+        }
     }
 
 }
