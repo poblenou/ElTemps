@@ -1,8 +1,10 @@
 package com.example.poblenou.eltemps;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,9 +16,14 @@ import android.widget.ListView;
 
 import com.example.poblenou.eltemps.json.Forecast;
 import com.example.poblenou.eltemps.json.List;
-import com.github.kevinsawicki.http.HttpRequest;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -102,41 +109,74 @@ public class WeatherFragment extends Fragment {
     public class DownloadWeatherTask extends AsyncTask<Void, Void, ArrayList<String>> {
         @Override
         protected ArrayList<String> doInBackground(Void... params) {
-            final String OWMURL = "http://api.openweathermap.org/data/2.5/forecast/daily";
+            final String OWMURL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
 
-            final String QUERY_PARAM = "q";
+            String QUERY_PARAM = "q";
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
             final String APPID_PARAM = "appid";
 
-            final String CITY = "Barcelona";
             final String MODE = "json";
-            final String UNITS = "metric";
             final int COUNT = 14;
             final String APPID = "bd82977b86bf27fb59a04b61b657fb6f";
 
-            String response = HttpRequest.get(
-                    OWMURL, true,
-                    QUERY_PARAM, CITY,
-                    FORMAT_PARAM, MODE,
-                    UNITS_PARAM, UNITS,
-                    DAYS_PARAM, COUNT,
-                    APPID_PARAM, APPID
-            ).body();
+            String city = "Barcelona";
+            String units = "metric";
 
-            Gson gson = new Gson();
-            Forecast forecast = gson.fromJson(response, Forecast.class);
-
-            ArrayList<List> dailyForecasts = (ArrayList<List>) forecast.getList();
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
             ArrayList<String> dailyForecastsStrings = new ArrayList<>();
+            try {
 
-            for (List dailyForecast : dailyForecasts) {
-                dailyForecastsStrings.add(dailyForecast.getForecastString());
+                Uri builtUri = Uri.parse(OWMURL).buildUpon()
+                        .appendQueryParameter(QUERY_PARAM, city)
+                        .appendQueryParameter(FORMAT_PARAM, MODE)
+                        .appendQueryParameter(UNITS_PARAM, units)
+                        .appendQueryParameter(DAYS_PARAM, String.valueOf(COUNT))
+                        .appendQueryParameter(APPID_PARAM, APPID)
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+
+                // Create the request to OpenWeatherMap, and open the connection
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                Gson gson = new Gson();
+                Forecast forecast = gson.fromJson(reader, Forecast.class);
+
+                ArrayList<List> dailyForecasts = (ArrayList<List>) forecast.getList();
+
+                for (List dailyForecast : dailyForecasts) {
+                    dailyForecastsStrings.add(dailyForecast.getForecastString());
+                }
+
+            } catch (IOException e) {
+                Log.e(null, "Error ", e);
+                // If the code didn't successfully get the weather data, there's no point in attempting
+                // to parse it.
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(null, "Error closing stream", e);
+                    }
+                }
             }
-
             return dailyForecastsStrings;
         }
+
 
         @Override
         protected void onProgressUpdate(Void... values) {
@@ -150,6 +190,7 @@ public class WeatherFragment extends Fragment {
             adapter.clear();
             adapter.addAll(forecasts);
         }
+
     }
 
 }
