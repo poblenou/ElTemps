@@ -2,6 +2,7 @@ package com.example.poblenou.eltemps;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -102,18 +103,23 @@ public class WeatherFragment extends Fragment
 
         return super.onOptionsItemSelected(item);
     }
-    private void refresh (){
+    private void refresh ()
+    {
         //Conectamos con la api
-        String BASE_URL = "http://api.openweathermap.org/data/2.5";
+        final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         //Creamos el servicio
         ClientWeatherMap service = retrofit.create(ClientWeatherMap.class);
+
         //Hacemos una llamada
         Call<Forecast> forecastCall=service.dailyForecast();
+
         forecastCall.enqueue(new Callback<Forecast>() {
+
             @Override
             public void onResponse(Response<Forecast> response, Retrofit retrofit) {
                 Forecast forecast = response.body();
@@ -130,13 +136,14 @@ public class WeatherFragment extends Fragment
 
             @Override
             public void onFailure(Throwable t) {
-
+                Log.w(null, Arrays.toString(t.getStackTrace()));
             }
         });
 
     }
-    public interface ClientWeatherMap{
-        @GET("forecast/daily?q=Barcelona&units=metric&cnt=14&APPID=720f431ee254e6c38e84787031900368")
+    public interface ClientWeatherMap
+    {
+        @GET("q=Barcelona&units=metric&cnt=14&APPID=720f431ee254e6c38e84787031900368")
         Call<Forecast> dailyForecast();
     }
 
