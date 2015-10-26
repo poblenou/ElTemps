@@ -102,11 +102,28 @@ public class WeatherFragment extends Fragment {
     public class DownloadWeatherTask extends AsyncTask<Void, Void, ArrayList<String>> {
         @Override
         protected ArrayList<String> doInBackground(Void... params) {
-            final String ownUrl = "http://api.openweathermap.org/data/2.5/" +
-                    "forecast/daily?q=Barcelona&mode=json&units=metric&cnt=14&" +
-                    "appid=bd82977b86bf27fb59a04b61b657fb6f";
+            final String OWMURL = "http://api.openweathermap.org/data/2.5/forecast/daily";
 
-            String response = HttpRequest.get(ownUrl).body();
+            final String QUERY_PARAM = "q";
+            final String FORMAT_PARAM = "mode";
+            final String UNITS_PARAM = "units";
+            final String DAYS_PARAM = "cnt";
+            final String APPID_PARAM = "appid";
+
+            final String CITY = "Barcelona";
+            final String MODE = "json";
+            final String UNITS = "metric";
+            final int COUNT = 14;
+            final String APPID = "bd82977b86bf27fb59a04b61b657fb6f";
+
+            String response = HttpRequest.get(
+                    OWMURL, true,
+                    QUERY_PARAM, CITY,
+                    FORMAT_PARAM, MODE,
+                    UNITS_PARAM, UNITS,
+                    DAYS_PARAM, COUNT,
+                    APPID_PARAM, APPID
+            ).body();
 
             Gson gson = new Gson();
             Forecast forecast = gson.fromJson(response, Forecast.class);
