@@ -4,13 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.example.poblenou.eltemps.json.Forecast;
-import com.example.poblenou.eltemps.json.List;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import retrofit.Call;
@@ -46,7 +42,7 @@ public class OwmApiClient {
         service = retrofit.create(OpenWeatherMapService.class);
     }
 
-    public void updateForecasts(final ArrayAdapter<String> adapter, Context context) {
+    public void updateForecasts(final WeatherAdapter adapter, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         String city = preferences.getString("city", "Barcelona");
@@ -60,13 +56,8 @@ public class OwmApiClient {
             public void onResponse(Response<Forecast> response, Retrofit retrofit) {
                 Forecast forecast = response.body();
 
-                ArrayList<String> forecastStrings = new ArrayList<>();
-                for (List list : forecast.getList()) {
-                    forecastStrings.add(list.getForecastString());
-                }
-
                 adapter.clear();
-                adapter.addAll(forecastStrings);
+                adapter.addAll(forecast.getList());
             }
 
             @Override
