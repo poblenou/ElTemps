@@ -90,6 +90,6 @@ public class WeatherFragment extends Fragment {
 
     private void refresh() {
         OwmApiClient apiClient = new OwmApiClient();
-        apiClient.updateForecasts(adapter);
+        apiClient.updateForecasts(adapter, getContext());
     }
 }

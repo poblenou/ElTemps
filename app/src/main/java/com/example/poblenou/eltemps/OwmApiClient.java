@@ -1,5 +1,8 @@
 package com.example.poblenou.eltemps;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -31,7 +34,6 @@ interface OpenWeatherMapService {
 public class OwmApiClient {
     private final OpenWeatherMapService service;
     private final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/";
-    private final String CITY = "Barcelona";
     private final String APPID = "bd82977b86bf27fb59a04b61b657fb6f";
 
 
@@ -44,9 +46,13 @@ public class OwmApiClient {
         service = retrofit.create(OpenWeatherMapService.class);
     }
 
-    public void updateForecasts(final ArrayAdapter<String> adapter) {
+    public void updateForecasts(final ArrayAdapter<String> adapter, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String city = preferences.getString("city", "Barcelona");
+        String units = preferences.getString("units", "metric");
+
         Call<Forecast> forecastCall = service.dailyForecast(
-                CITY, "json", "metric", 14, APPID
+                city, "json", units, 14, APPID
         );
         forecastCall.enqueue(new Callback<Forecast>() {
             @Override
