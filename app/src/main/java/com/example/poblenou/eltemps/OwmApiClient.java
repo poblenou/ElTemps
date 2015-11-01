@@ -35,7 +35,7 @@ public class OwmApiClient {
     private final OpenWeatherMapService service;
     private final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/";
     private final String APPID = "bd82977b86bf27fb59a04b61b657fb6f";
-
+    private final String FORMAT = "json";
 
     public OwmApiClient() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -48,11 +48,12 @@ public class OwmApiClient {
 
     public void updateForecasts(final ArrayAdapter<String> adapter, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
         String city = preferences.getString("city", "Barcelona");
         String units = preferences.getString("units", "metric");
 
         Call<Forecast> forecastCall = service.dailyForecast(
-                city, "json", units, 14, APPID
+                city, FORMAT, units, 14, APPID
         );
         forecastCall.enqueue(new Callback<Forecast>() {
             @Override
