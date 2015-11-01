@@ -32,6 +32,16 @@ public class WeatherFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        refresh();
+
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
