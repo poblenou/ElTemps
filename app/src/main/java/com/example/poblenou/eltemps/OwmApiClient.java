@@ -62,8 +62,7 @@ public class OwmApiClient {
 
                 ArrayList<String> forecastStrings = new ArrayList<>();
                 for (List list : forecast.getList()) {
-                    String forecastString = getForecastString(list);
-                    forecastStrings.add(forecastString);
+                    forecastStrings.add(list.getForecastString());
                 }
 
                 adapter.clear();
@@ -76,22 +75,6 @@ public class OwmApiClient {
             }
         });
 
-    }
-
-    private String getForecastString(List list) {
-        Long dt = list.getDt();
-        java.util.Date date = new java.util.Date(dt * 1000);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("E d/M");
-        String dateString = dateFormat.format(date);
-
-        String description = list.getWeather().get(0).getDescription();
-
-        Long min = Math.round(list.getTemp().getMin());
-        Long max = Math.round(list.getTemp().getMax());
-
-        return String.format("%s - %s - %s/%s",
-                dateString, description, min, max
-        );
     }
 }
 

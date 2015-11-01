@@ -1,6 +1,7 @@
 
 package com.example.poblenou.eltemps.json;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class List {
@@ -9,7 +10,7 @@ public class List {
     private Temp temp;
     private Double pressure;
     private Long humidity;
-    private java.util.List<Weather> weather = new ArrayList<Weather>();
+    private java.util.List<Weather> weather = new ArrayList<>();
     private Double speed;
     private Long deg;
     private Long clouds;
@@ -139,6 +140,22 @@ public class List {
      */
     public void setRain(Double rain) {
         this.rain = rain;
+    }
+
+    public String getForecastString() {
+        Long dt = getDt();
+        java.util.Date date = new java.util.Date(dt * 1000);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("E d/M");
+        String dateString = dateFormat.format(date);
+
+        String description = getWeather().get(0).getDescription();
+
+        Long min = Math.round(getTemp().getMin());
+        Long max = Math.round(getTemp().getMax());
+
+        return String.format("%s - %s - %s/%s",
+                dateString, description, min, max
+        );
     }
 
 }
