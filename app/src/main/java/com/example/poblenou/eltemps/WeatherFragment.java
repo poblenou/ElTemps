@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.poblenou.eltemps.json.List;
@@ -54,6 +55,13 @@ public class WeatherFragment extends Fragment {
 
         ListView lvForecast = (ListView) rootView.findViewById(R.id.lvForecasts);
         lvForecast.setAdapter(adapter);
+
+        lvForecast.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
 
         return rootView;
     }
