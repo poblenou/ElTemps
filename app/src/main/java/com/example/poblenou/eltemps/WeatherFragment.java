@@ -1,5 +1,6 @@
 package com.example.poblenou.eltemps;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -61,6 +62,9 @@ public class WeatherFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 List item = (List) parent.getItemAtPosition(position);
 
+                Intent i = new Intent(getContext(), DetailActivity.class);
+                i.putExtra("item", item);
+                startActivity(i);
             }
         });
 
