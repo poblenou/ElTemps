@@ -59,6 +59,7 @@ public class WeatherFragment extends Fragment {
         lvForecast.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                List item = (List) parent.getItemAtPosition(position);
 
             }
         });
