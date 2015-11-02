@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.poblenou.eltemps.json.List;
 
@@ -24,6 +25,9 @@ public class DetailActivityFragment extends Fragment {
 
         Intent i = getActivity().getIntent();
         List item = (List) i.getSerializableExtra("item");
+
+        TextView tvForecast = (TextView) view.findViewById(R.id.tvForecast);
+        tvForecast.setText(item.getForecastString());
 
         return view;
     }
