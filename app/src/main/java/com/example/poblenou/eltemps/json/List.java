@@ -1,10 +1,11 @@
 
 package com.example.poblenou.eltemps.json;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class List {
+public class List implements Serializable {
 
     private Long dt;
     private Temp temp;
