@@ -1,6 +1,8 @@
 
 package com.example.poblenou.eltemps.json;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -143,11 +145,25 @@ public class List implements Serializable {
         this.rain = rain;
     }
 
+    public String getMaxTemp(String units) {
+        return getFormattedTemp(getTemp().getMax(), units);
+    }
+
+    public String getMinTemp(String units) {
+        return getFormattedTemp(getTemp().getMin(), units);
+    }
+
+    public String getFormattedTemp(Double temp, String units) {
+        Long rounded = Math.round(temp);
+        if (units.equals("metric")) {
+            return rounded.toString() + " ºC";
+        } else {
+            return rounded.toString() + " ºK";
+        }
+    }
+
     public String getForecastString() {
-        Long dt = getDt();
-        java.util.Date date = new java.util.Date(dt * 1000);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("E d/M");
-        String dateString = dateFormat.format(date);
+        String dateString = getFormattedTemp();
 
         String description = getWeather().get(0).getDescription();
 
@@ -157,6 +173,14 @@ public class List implements Serializable {
         return String.format("%s - %s - %s/%s",
                 dateString, description, min, max
         );
+    }
+
+    @NonNull
+    public String getFormattedTemp() {
+        Long dt = getDt();
+        java.util.Date date = new java.util.Date(dt * 1000);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("E d/M");
+        return dateFormat.format(date);
     }
 
 }
