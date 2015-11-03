@@ -51,4 +51,41 @@ public class WeatherAdapter extends ArrayAdapter<List> {
         // Retornem la View replena per a mostrarla
         return convertView;
     }
+
+    private String getIconUrl(int weatherId) {
+        String base = "http://openweathermap.org/img/w/";
+        String icon = getIconResourceForWeatherCondition(weatherId);
+
+        return base + icon;
+    }
+
+    private String getIconResourceForWeatherCondition(int weatherId) {
+        // Based on weather code data found at:
+        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+        if (weatherId >= 200 && weatherId <= 232) {
+            return "11d";
+        } else if (weatherId >= 300 && weatherId <= 321) {
+            return "09d";
+        } else if (weatherId >= 500 && weatherId <= 504) {
+            return "10d.png";
+        } else if (weatherId == 511) {
+            return "13d.png";
+        } else if (weatherId >= 520 && weatherId <= 531) {
+            return "09d.png";
+        } else if (weatherId >= 600 && weatherId <= 622) {
+            return "13d.png";
+        } else if (weatherId >= 701 && weatherId <= 761) {
+            return "50d.png";
+        } else if (weatherId == 761 || weatherId == 781) {
+            return "50d.png";
+        } else if (weatherId == 800) {
+            return "01n.png";
+        } else if (weatherId == 801) {
+            return "02d.png";
+        } else if (weatherId >= 802 && weatherId <= 804) {
+            return "04d.png";
+        }
+        return "01d.png";
+    }
+
 }
