@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.poblenou.eltemps.json.List;
+import com.squareup.picasso.Picasso;
 
 public class WeatherAdapter extends ArrayAdapter<List> {
     private final Context context;
@@ -48,18 +49,20 @@ public class WeatherAdapter extends ArrayAdapter<List> {
         tvlistItemHighTextview.setText(item.getMaxTemp(units));
         tvlistItemLowTextview.setText(item.getMinTemp(units));
 
+        Picasso.with(context).
+                load(getIconUrl(item.getWeather().get(0).getIcon())).into(ivlistItemIcon);
+
         // Retornem la View replena per a mostrarla
         return convertView;
     }
 
-    private String getIconUrl(int weatherId) {
+    private String getIconUrl(String icon) {
         String base = "http://openweathermap.org/img/w/";
-        String icon = getIconResourceForWeatherCondition(weatherId);
 
-        return base + icon;
+        return base + icon + ".png";
     }
 
-    private String getIconResourceForWeatherCondition(int weatherId) {
+    private String getIconResourceForWeatherCondition(Long weatherId) {
         // Based on weather code data found at:
         // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
         if (weatherId >= 200 && weatherId <= 232) {
