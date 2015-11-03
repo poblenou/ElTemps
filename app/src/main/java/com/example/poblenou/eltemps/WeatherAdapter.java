@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.poblenou.eltemps.json.List;
@@ -27,10 +28,17 @@ public class WeatherAdapter extends ArrayAdapter<List> {
         }
 
         // Unim el codi en les Views del Layout
-        TextView tvForecast = (TextView) convertView.findViewById(R.id.tvForecast);
+        ImageView ivlistItemIcon = (ImageView) convertView.findViewById(R.id.list_item_icon);
+        TextView tvlistItemDateTextview = (TextView) convertView.findViewById(R.id.list_item_date_textview);
+        TextView tvlistItemForecastTextview = (TextView) convertView.findViewById(R.id.list_item_forecast_textview);
+        TextView tvlistItemHighTextview = (TextView) convertView.findViewById(R.id.list_item_high_textview);
+        TextView tvlistItemLowTextview = (TextView) convertView.findViewById(R.id.list_item_low_textview);
 
         // Fiquem les dades dels objectes (provinents del JSON) en el layout
-        tvForecast.setText(item.getForecastString());
+        tvlistItemDateTextview.setText(item.getDt().toString());
+        tvlistItemForecastTextview.setText(item.getWeather().get(0).getDescription());
+        tvlistItemHighTextview.setText(item.getTemp().getMax().toString());
+        tvlistItemLowTextview.setText(item.getTemp().getMin().toString());
 
         // Retornem la View replena per a mostrarla
         return convertView;
