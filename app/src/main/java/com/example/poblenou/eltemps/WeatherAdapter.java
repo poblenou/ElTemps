@@ -49,46 +49,43 @@ public class WeatherAdapter extends ArrayAdapter<List> {
         tvlistItemHighTextview.setText(item.getMaxTemp(units));
         tvlistItemLowTextview.setText(item.getMinTemp(units));
 
+
+        Long id = item.getWeather().get(0).getId();
         Picasso.with(context).
-                load(getIconUrl(item.getWeather().get(0).getIcon())).into(ivlistItemIcon);
+                load(getIconResourceForWeatherCondition(id)).into(ivlistItemIcon);
 
         // Retornem la View replena per a mostrarla
         return convertView;
     }
 
-    private String getIconUrl(String icon) {
-        String base = "http://openweathermap.org/img/w/";
-
-        return base + icon + ".png";
-    }
-
-    private String getIconResourceForWeatherCondition(Long weatherId) {
+    private Integer getIconResourceForWeatherCondition(Long weatherId) {
         // Based on weather code data found at:
         // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+
         if (weatherId >= 200 && weatherId <= 232) {
-            return "11d";
+            return R.drawable.ic_storm;
         } else if (weatherId >= 300 && weatherId <= 321) {
-            return "09d";
+            return R.drawable.ic_light_rain;
         } else if (weatherId >= 500 && weatherId <= 504) {
-            return "10d.png";
+            return R.drawable.ic_rain;
         } else if (weatherId == 511) {
-            return "13d.png";
+            return R.drawable.ic_snow;
         } else if (weatherId >= 520 && weatherId <= 531) {
-            return "09d.png";
+            return R.drawable.ic_rain;
         } else if (weatherId >= 600 && weatherId <= 622) {
-            return "13d.png";
+            return R.drawable.ic_snow;
         } else if (weatherId >= 701 && weatherId <= 761) {
-            return "50d.png";
+            return R.drawable.ic_fog;
         } else if (weatherId == 761 || weatherId == 781) {
-            return "50d.png";
+            return R.drawable.ic_storm;
         } else if (weatherId == 800) {
-            return "01n.png";
+            return R.drawable.ic_clear;
         } else if (weatherId == 801) {
-            return "02d.png";
+            return R.drawable.ic_light_clouds;
         } else if (weatherId >= 802 && weatherId <= 804) {
-            return "04d.png";
+            return R.drawable.ic_cloudy;
         }
-        return "01d.png";
+        return -1;
     }
 
 }

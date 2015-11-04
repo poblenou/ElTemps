@@ -30,7 +30,7 @@ interface OpenWeatherMapService {
 public class OwmApiClient {
     private final OpenWeatherMapService service;
     private final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/";
-    private final String APPID = "bd82977b86bf27fb59a04b61b657fb6f";
+    private final String APPID = "375ed3b68e2560968dc4e2f1b180f2ef";
     private final String FORMAT = "json";
 
     public OwmApiClient() {
