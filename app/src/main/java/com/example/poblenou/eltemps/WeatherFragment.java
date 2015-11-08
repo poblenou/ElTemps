@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class WeatherFragment extends Fragment {
 
-    private ArrayList<List> items;
+    private ArrayList<Forecast> items;
     private WeatherAdapter adapter;
 
     public WeatherFragment() {

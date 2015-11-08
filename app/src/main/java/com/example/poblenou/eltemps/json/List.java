@@ -156,9 +156,9 @@ public class List implements Serializable {
     public String getFormattedTemp(Double temp, String units) {
         Long rounded = Math.round(temp);
         if (units.equals("metric")) {
-            return rounded.toString() + " ºC";
+            return rounded.toString() + "º";
         } else {
-            return rounded.toString() + " ºK";
+            return rounded.toString() + "º";
         }
     }
 
@@ -183,4 +183,11 @@ public class List implements Serializable {
         return dateFormat.format(date);
     }
 
+    public Long getFormattedPressure() {
+        return Math.round(getPressure());
+    }
+
+    public Long getFormattedWindSpeed() {
+        return Math.round(getSpeed());
+    }
 }
