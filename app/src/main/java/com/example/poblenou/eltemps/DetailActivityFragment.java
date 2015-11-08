@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.poblenou.eltemps.json.List;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -67,7 +66,7 @@ public class DetailActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         Intent i = getActivity().getIntent();
-        List item = (List) i.getSerializableExtra("item");
+        Forecast item = (Forecast) i.getSerializableExtra("item");
 
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
@@ -80,11 +79,11 @@ public class DetailActivityFragment extends Fragment {
         mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
 
         Picasso.with(getContext()).
-                load(getArtResourceForWeatherCondition(item.getWeather().get(0).getId()))
+                load(getArtResourceForWeatherCondition(item.getWeatherId()))
                 .into(mIconView);
 
-        mFriendlyDateView.setText(item.getFormattedTemp());
-        mDescriptionView.setText(item.getWeather().get(0).getDescription());
+        mFriendlyDateView.setText(item.getFormattedDate());
+        mDescriptionView.setText(item.getShort_desc());
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String units = preferences.getString("units", "metric");

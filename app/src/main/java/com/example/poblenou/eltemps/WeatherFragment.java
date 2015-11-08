@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.poblenou.eltemps.json.List;
-
 import java.util.ArrayList;
 
 /**
@@ -60,7 +58,7 @@ public class WeatherFragment extends Fragment {
         lvForecast.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                List item = (List) parent.getItemAtPosition(position);
+                Forecast item = (Forecast) parent.getItemAtPosition(position);
 
                 Intent i = new Intent(getContext(), DetailActivity.class);
                 i.putExtra("item", item);

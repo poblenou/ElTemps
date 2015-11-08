@@ -2,10 +2,11 @@ package com.example.poblenou.eltemps;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Forecast {
+public class Forecast implements Serializable {
     private Long location_id;
     private Date date;
     private String short_desc;
@@ -113,11 +114,11 @@ public class Forecast {
     }
 
     public Long getFormattedPressure() {
-        return Math.round(getPressure());
+        return Math.round(pressure);
     }
 
     public Long getFormattedWindSpeed() {
-        return Math.round(getWind());
+        return Math.round(wind);
     }
 
     public String getMaxTemp(String units) {

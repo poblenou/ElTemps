@@ -76,6 +76,7 @@ public class OwmApiClient {
                     forecast.setDegrees(jsonForecast.get("deg").getAsDouble());
                     forecast.setHumidity(jsonForecast.get("humidity").getAsDouble());
                     forecast.setWind(jsonForecast.get("speed").getAsDouble());
+                    forecast.setPressure(jsonForecast.get("pressure").getAsDouble());
 
                     JsonArray weatherArray = jsonForecast.get("weather").getAsJsonArray();
                     JsonObject weatherObject = weatherArray.get(0).getAsJsonObject();
