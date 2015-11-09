@@ -10,13 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.poblenou.eltemps.json.List;
 import com.squareup.picasso.Picasso;
 
-public class WeatherAdapter extends ArrayAdapter<List> {
+public class WeatherAdapter extends ArrayAdapter<Forecast> {
     private final Context context;
 
-    public WeatherAdapter(Context context, int resource, java.util.List<List> objects) {
+    public WeatherAdapter(Context context, int resource, java.util.List<Forecast> objects) {
         super(context, resource, objects);
         this.context = context;
     }
@@ -24,7 +23,7 @@ public class WeatherAdapter extends ArrayAdapter<List> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Obtenim l'objecte en la posició corresponent
-        List item = getItem(position);
+        Forecast item = getItem(position);
 
         // Mirem a veure si la View s'està reusant, si no es així "inflem" la View
         // https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView#row-view-recycling
@@ -44,13 +43,12 @@ public class WeatherAdapter extends ArrayAdapter<List> {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String units = preferences.getString("units", "metric");
 
-        tvlistItemDateTextview.setText(item.getFormattedTemp());
-        tvlistItemForecastTextview.setText(item.getWeather().get(0).getDescription());
+        tvlistItemDateTextview.setText(item.getFormattedDate());
+        tvlistItemForecastTextview.setText(item.getShort_desc());
         tvlistItemHighTextview.setText(item.getMaxTemp(units));
         tvlistItemLowTextview.setText(item.getMinTemp(units));
 
-
-        Long id = item.getWeather().get(0).getId();
+        Long id = item.getWeatherId();
         Picasso.with(context).
                 load(getIconResourceForWeatherCondition(id)).into(ivlistItemIcon);
 

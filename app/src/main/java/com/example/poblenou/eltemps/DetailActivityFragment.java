@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.poblenou.eltemps.json.List;
+import com.squareup.picasso.Picasso;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -31,13 +31,42 @@ public class DetailActivityFragment extends Fragment {
     public DetailActivityFragment() {
     }
 
+    public static int getArtResourceForWeatherCondition(Long weatherId) {
+        // Based on weather code data found at:
+        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+        if (weatherId >= 200 && weatherId <= 232) {
+            return R.drawable.art_storm;
+        } else if (weatherId >= 300 && weatherId <= 321) {
+            return R.drawable.art_light_rain;
+        } else if (weatherId >= 500 && weatherId <= 504) {
+            return R.drawable.art_rain;
+        } else if (weatherId == 511) {
+            return R.drawable.art_snow;
+        } else if (weatherId >= 520 && weatherId <= 531) {
+            return R.drawable.art_rain;
+        } else if (weatherId >= 600 && weatherId <= 622) {
+            return R.drawable.art_snow;
+        } else if (weatherId >= 701 && weatherId <= 761) {
+            return R.drawable.art_fog;
+        } else if (weatherId == 761 || weatherId == 781) {
+            return R.drawable.art_storm;
+        } else if (weatherId == 800) {
+            return R.drawable.art_clear;
+        } else if (weatherId == 801) {
+            return R.drawable.art_light_clouds;
+        } else if (weatherId >= 802 && weatherId <= 804) {
+            return R.drawable.art_clouds;
+        }
+        return -1;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         Intent i = getActivity().getIntent();
-        List item = (List) i.getSerializableExtra("item");
+        Forecast item = (Forecast) i.getSerializableExtra("item");
 
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
@@ -49,17 +78,22 @@ public class DetailActivityFragment extends Fragment {
         mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
         mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
 
-        mFriendlyDateView.setText(item.getFormattedTemp());
-        mDescriptionView.setText(item.getWeather().get(0).getDescription());
+        Picasso.with(getContext()).
+                load(getArtResourceForWeatherCondition(item.getWeatherId()))
+                .into(mIconView);
+
+        mFriendlyDateView.setText(item.getFormattedDate());
+        mDescriptionView.setText(item.getShort_desc());
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String units = preferences.getString("units", "metric");
         mHighTempView.setText(item.getMaxTemp(units));
         mLowTempView.setText(item.getMinTemp(units));
 
-        mHumidityView.setText(item.getHumidity().toString());
-        mWindView.setText(item.getSpeed().toString());
-        mPressureView.setText(item.getPressure().toString());
+        mHumidityView.setText(String.format("Humidity: %s%%", item.getHumidity()));
+        mPressureView.setText(String.format("Pressure: %s hPa", item.getFormattedPressure()));
+        mWindView.setText(String.format("Wind Speed: %s km/h", item.getFormattedWindSpeed()));
         return rootView;
     }
+
 }
