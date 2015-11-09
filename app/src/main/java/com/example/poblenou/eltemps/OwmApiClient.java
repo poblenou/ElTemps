@@ -2,11 +2,9 @@ package com.example.poblenou.eltemps;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.poblenou.eltemps.provider.EltempsProvider;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,7 +12,6 @@ import com.google.gson.JsonObject;
 import java.util.Arrays;
 import java.util.Date;
 
-import nl.littlerobots.cupboard.tools.provider.UriHelper;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -22,8 +19,6 @@ import retrofit.Response;
 import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Query;
-
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 interface OpenWeatherMapService {
     @GET("forecast/daily")
@@ -50,10 +45,10 @@ public class OwmApiClient {
         service = retrofit.create(OpenWeatherMapService.class);
     }
 
-    public void updateForecasts(final WeatherAdapter adapter, final Context context) {
+    public void updateForecasts(final WeatherAdapter adapter, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        final String city = preferences.getString("city", "Barcelona");
+        String city = preferences.getString("city", "Barcelona");
         String units = preferences.getString("units", "metric");
 
         Call<JsonObject> forecastCall = service.dailyForecast(
@@ -88,11 +83,7 @@ public class OwmApiClient {
                     forecast.setShort_desc(weatherObject.get("main").getAsString());
                     forecast.setWeatherId(weatherObject.get("id").getAsLong());
 
-                    UriHelper helper = UriHelper.with(EltempsProvider.AUTHORITY);
-                    Uri forecastUri = helper.getUri(Forecast.class);
-                    Uri uri = cupboard().withContext(context).put(forecastUri, forecast);
-
-                    //adapter.addAll(forecast);
+                    adapter.addAll(forecast);
                 }
             }
 
